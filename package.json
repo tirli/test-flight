@@ -1,0 +1,44 @@
+{
+  "name": "test-flight",
+  "version": "1.0.0",
+  "description": "Test project for flights",
+  "main": "./api/index.js",
+  "scripts": {
+    "start": "node --harmony ./api",
+    "dev": "./node_modules/.bin/nodemon --harmony ./api"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tirli/test-flight.git"
+  },
+  "engines": {
+    "node": ">=7.2.x"
+  },
+  "keywords": [
+    "flight",
+    "koa2",
+    "vanillaJS"
+  ],
+  "author": "Kate Lizogubova",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tirli/test-flight/issues"
+  },
+  "homepage": "https://github.com/tirli/test-flight#readme",
+  "devDependencies": {
+    "eslint": "^3.12.2",
+    "eslint-config-airbnb-base": "^11.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "babel-preset-es2017-node7": "^0.4.1",
+    "babel-register": "^6.23.0",
+    "koa": "next",
+    "koa-bodyparser": "^2.3.0",
+    "koa-router": "next",
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1",
+    "request-promise-native": "^1.0.3"
+  }
+}
