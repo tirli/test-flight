@@ -3,5 +3,9 @@
   "env": {
     "browser": true,
     "node": true
+  },
+  "rules": {
+    "no-param-reassign": "off",
+    "no-throw-literal": "off"
   }
 }

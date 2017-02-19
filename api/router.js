@@ -1,48 +1,33 @@
 import Router from 'koa-router';
-import request from 'request-promise-native';
+import parse from 'date-fns/parse';
+import isValid from 'date-fns/is_valid';
+
+import { getAirlines, getAirports, getFlights } from './flightAPI';
 
 const router = new Router();
 
-const url = 'http://node.locomote.com/code-task';
-
 router
   .get('/airlines', async (ctx) => {
-    ctx.body = await request({ uri: `${url}/airlines`, json: true });
+    ctx.body = await getAirlines();
   })
   .get('/airports', async (ctx) => {
     const { city } = ctx.query;
-    if (!city) ctx.throw(400, 'Missing query param. city is required!');
+    if (!city) throw { code: 422, error: 'Missing query param. city is required!' };
 
-    ctx.body = await request({ uri: `${url}/airports?q=${city}`, json: true });
+    ctx.body = await getAirports(city);
   })
   .get('/search', async (ctx) => {
-    try {
-      const { date, from_city, to_city } = ctx.query;
+    const { date, from_city, to_city } = ctx.query;
 
-      if (!date || !from_city || !to_city) {
-        ctx.throw(400, 'Missing query params. date, from_city, to_city are required!');
-      }
-
-      const airlines = await request({ uri: `${url}/airlines`, json: true });
-      const from = await request({ uri: `${url}/airports?q=${from_city}`, json: true });
-      const to = await request({ uri: `${url}/airports?q=${to_city}`, json: true });
-
-      const promises = [];
-
-      airlines.forEach((al) => {
-        from.forEach((fr) => {
-          to.forEach((t) => {
-            const req = `${url}/flight_search/${al.code}?date=${date}&from=${fr.airportCode}&to=${t.airportCode}`;
-            promises.push(request({ uri: req, json: true }));
-          });
-        });
-      });
-
-      ctx.body = await Promise.all(promises);
-    } catch (e) {
-      ctx.throw(e);
+    if (!date || !from_city || !to_city) { // eslint-disable-line camelcase
+      throw { code: 422, error: 'Missing query params. date, from_city, to_city are required!' };
     }
+
+    const parsedDate = parse(date);
+    if (!isValid(parsedDate)) throw { code: 400, error: 'Invalid date' };
+
+    ctx.body = await getFlights(from_city, to_city, parsedDate);
   })
-  ;
+;
 
 export default router;
