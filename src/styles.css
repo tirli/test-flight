@@ -1,0 +1,53 @@
+html {
+  box-sizing: border-box;
+}
+
+html * {
+  box-sizing: inherit;
+}
+
+body {
+  font-size: 1.6rem;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+html, body, .content {
+  height: 100%;
+}
+
+.header {
+  font-size: 3rem;
+  background-color: #5764c6;
+  color: white;
+  padding: 1rem;
+  flex: 0 0 auto;
+}
+
+.content {
+  padding: 1rem;
+  flex: 1 1 auto;
+  overflow: auto;
+}
+
+.footer {
+  background-color: #5764c6;
+  color: white;
+  padding: 1rem;
+  flex: 0 0 auto;
+}
+
+.searchForm {
+  display: flex;
+}
+
+.search-label {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+}
+
+.tab-button {
+  cursor: pointer;
+}

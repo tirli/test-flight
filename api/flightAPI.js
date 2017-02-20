@@ -5,7 +5,11 @@ import subDays from 'date-fns/sub_days';
 import format from 'date-fns/format';
 import { stringify } from 'query-string';
 
-const fetch = (...args) => isomorphicFetch(...args).then(r => r.json());
+const fetch = (...args) => isomorphicFetch(...args)
+  .then((r) => {
+    if (!r.ok) throw { code: r.status, error: 'API error' };
+    return r.json();
+  });
 
 const flightAPIUrl = 'http://node.locomote.com/code-task';
 
@@ -19,6 +23,7 @@ export function getAirports(city) {
 
 function getFlightsForDay(airlines, from, to, date) {
   const flights = [];
+
   airlines.forEach((al) => {
     from.forEach((fr) => {
       to.forEach((t) => {
@@ -43,6 +48,7 @@ export async function getFlights(cityFrom, cityTo, date) {
     getAirports(cityTo),
   ]);
 
+  // FIXME for past dates
   const dates = [subDays(date, 2), subDays(date, 1), date, addDays(date, 1), addDays(date, 2)];
   const flightsPromises = [];
 

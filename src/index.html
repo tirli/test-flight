@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flight</title>
+  <script src="/index.js" defer></script>
+  <script src="/modules/api.js" defer></script>
+  <script src="/modules/search.js" defer></script>
+  <script src="/modules/init.js" defer></script>
+
+  <link rel="stylesheet" href="/spectre.css/dist/spectre.min.css" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+  <header class="header">
+    Flight
+  </header>
+  <main class="content">
+    <section>
+      <form class="searchForm">
+        <label class="form-label search-label">
+            From:
+            <input class="form-input" name="from" type="text" required value="Moscow">
+          </label>
+        <label class="form-label search-label">
+            To:
+            <input class="form-input" name="to" type="text" required value="Dubai">
+          </label>
+        <label class="form-label search-label">
+            Date:
+            <input class="form-input" name="date" type="date" required value="2017-03-01">
+          </label>
+        <button class="btn btn-primary"z> Search </button>
+      </form>
+    </section>
+
+    <section class="flights">
+
+    </section>
+  </main>
+
+  <footer class="footer"> (c) 2017 </footer>
+
+  <template id="flightTable">
+      <table class="table table-striped table-hover flight-table">
+        <thead>
+          <tr>
+            <th>Airline</th>
+            <th>Flight No</th>
+            <th>From</th>
+            <th>Time</th>
+            <th>To</th>
+            <th>Time</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </template>
+
+    <template id="flightTableRow">
+      <tr>
+       <td></td>
+       <td></td>
+       <td></td>
+       <td></td>
+       <td></td>
+       <td></td>
+       <td></td>
+      </tr>
+    </template>
+
+    <template id="tabs">
+      <ul class="tab tab-block"></ul>
+    </template>
+
+    <template id="tab">
+      <li class="tab-item">
+        <a role="button" class="badge tab-button" data-badge="0"></a>
+      </li>
+    </template>
+</body>
+
+</html>

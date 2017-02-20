@@ -5,7 +5,7 @@
   "main": "./api/index.js",
   "scripts": {
     "start": "node --harmony ./api",
-    "dev": "./node_modules/.bin/nodemon --harmony ./api"
+    "dev": "./node_modules/.bin/nodemon --harmony --inspect ./api"
   },
   "repository": {
     "type": "git",
@@ -39,8 +39,11 @@
     "koa": "next",
     "koa-bodyparser": "^2.3.0",
     "koa-router": "next",
+    "koa-send": "^3.3.0",
+    "koa-static": "^2.1.0",
     "lodash": "^4.17.4",
     "query-string": "^4.3.2",
-    "request": "^2.79.0"
+    "request": "^2.79.0",
+    "spectre.css": "^0.1.32"
   }
 }
