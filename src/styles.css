@@ -24,6 +24,14 @@ html, body, .content {
   flex: 0 0 auto;
 }
 
+.logo {
+  height: 2rem;
+  width: 2rem;
+  background: url(/img/flight-white.svg) no-repeat center;
+  display: inline-block;
+}
+
+
 .content {
   padding: 1rem;
   flex: 1 1 auto;
@@ -50,4 +58,24 @@ html, body, .content {
 
 .tab-button {
   cursor: pointer;
+}
+
+.no-data {
+  text-align: center;
+  margin: 2rem;
+  font-size: 2rem;
+}
+
+.spinner {
+  height: 5rem;
+  width: 5rem;
+  background: url(/img/flight.svg) no-repeat center;
+  animation: rotation 3s linear infinite;
+  transform-origin:100% 100%;
+  margin: 2rem auto;
+}
+
+@keyframes rotation {
+  0% {transform:rotate(0deg);}
+  100% {transform:rotate(360deg);}
 }

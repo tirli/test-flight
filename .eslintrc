@@ -6,6 +6,7 @@
   },
   "rules": {
     "no-param-reassign": "off",
-    "no-throw-literal": "off"
+    "no-throw-literal": "off",
+    "no-use-before-define": "off"
   }
 }

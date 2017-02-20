@@ -1,6 +1,4 @@
-this.Flight.SearchPage = (function searchPage(global, api) {
-  'use strict';
-
+this.Flight.SearchPage = (function searchPage(global, api, format) {
   let element;
   let flightsSection;
   let data;
@@ -12,11 +10,10 @@ this.Flight.SearchPage = (function searchPage(global, api) {
   }
 
   function onTabClick(index) {
-    return function () {
+    return function handleEvent() {
       tabIndex = index;
-      console.log(tabIndex);
       render();
-    }
+    };
   }
 
   function onSubmit(e) {
@@ -34,17 +31,20 @@ this.Flight.SearchPage = (function searchPage(global, api) {
   }
 
   function renderLoading() {
-    flightsSection.innerHTML = 'spinner';
+    const spinner = document.createElement('section');
+    spinner.classList.add('spinner');
+    flightsSection.innerHTML = '';
+    flightsSection.appendChild(spinner);
   }
 
   function renderTabs(flightsData, activeIndex) {
-    const tabs = document.querySelector('#tabs').content;
+    const tabs = document.querySelector('#tabs').content.cloneNode(true);
 
     Object.keys(flightsData).forEach((date, index) => {
       const tab = document.querySelector('#tab').content.cloneNode(true);
       const flights = flightsData[date];
       const tabButton = tab.querySelector('.tab-button');
-      tabButton.textContent = date;
+      tabButton.textContent = format(date, 'D MMM YYYY');
       tabButton.setAttribute('data-badge', flights.length);
 
       if (activeIndex === index) {
@@ -59,17 +59,26 @@ this.Flight.SearchPage = (function searchPage(global, api) {
   }
 
   function renderFlights(flights) {
-    const table = document.querySelector('#flightTable').content;
-    const tableRow = document.querySelector('#flightTableRow').content;
+    if (!flights.length) {
+      const noData = document.createElement('section');
+      noData.classList.add('no-data');
+      noData.innerText = 'No flights for this direction';
+      return noData;
+    }
+
+    const table = document.querySelector('#flightTable').content.cloneNode(true);
+    const tableRow = document.querySelector('#flightTableRow').content.cloneNode(true);
     const tds = tableRow.querySelectorAll('td');
 
-    flights.forEach((flight) => {
+    const sortedFlights = flights.sort((a, b) => a.price - b.price);
+
+    sortedFlights.forEach((flight) => {
       tds[0].textContent = flight.airline.name;
       tds[1].textContent = flight.flightNum;
       tds[2].textContent = `${flight.start.cityName}, ${flight.start.airportName}`;
-      tds[3].textContent = flight.start.dateTime;
+      tds[3].textContent = format(flight.start.dateTime, 'DD MMM YY HH:mm');
       tds[4].textContent = `${flight.finish.cityName}, ${flight.finish.airportName}`;
-      tds[5].textContent = flight.finish.dateTime;
+      tds[5].textContent = format(flight.finish.dateTime, 'DD MMM YY HH:mm');
       tds[6].textContent = flight.price;
 
       table.querySelector('tbody').appendChild(document.importNode(tableRow, true));
@@ -81,20 +90,17 @@ this.Flight.SearchPage = (function searchPage(global, api) {
   function render() {
     const tabs = renderTabs(data, tabIndex);
     const table = renderFlights(Object.values(data)[tabIndex]);
-    console.log('render', tabIndex);
 
     flightsSection.innerHTML = '';
     flightsSection.appendChild(document.importNode(tabs, true));
     flightsSection.appendChild(document.importNode(table, true));
 
-    // FIXME: check what wrong with event listener
-    Array.from(tabs.querySelectorAll('.tab-button')).forEach((tab, index) => {
-      console.log(tab);
-      tab.addEventListener('click', console.log.bind(console));
+    Array.from(flightsSection.querySelectorAll('.tab-button')).forEach((tab, index) => {
+      tab.addEventListener('click', onTabClick(index));
     });
   }
 
   return {
     init,
   };
-}(this, this.Flight.API));
+}(this, this.Flight.API, this.dateFns.format));
