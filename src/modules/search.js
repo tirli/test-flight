@@ -20,7 +20,10 @@ this.Flight.SearchPage = (function searchPage(global, api, format) {
     e.preventDefault();
     const { date, from, to } = this.elements;
     renderLoading();
-    api.search(date.value, from.value, to.value).then(saveData).then(render);
+    api.search(date.value, from.value, to.value).then(saveData).then((response) => {
+      if (response.error) return renderError(response.error);
+      return render(response);
+    });
   }
 
   function init(elem) {
@@ -58,12 +61,16 @@ this.Flight.SearchPage = (function searchPage(global, api, format) {
     return tabs;
   }
 
+  function createError(message) {
+    const error = document.createElement('section');
+    error.classList.add('no-data');
+    error.innerText = message;
+    return error;
+  }
+
   function renderFlights(flights) {
     if (!flights.length) {
-      const noData = document.createElement('section');
-      noData.classList.add('no-data');
-      noData.innerText = 'No flights for this direction';
-      return noData;
+      return createError('No flights for this direction');
     }
 
     const table = document.querySelector('#flightTable').content.cloneNode(true);
@@ -85,6 +92,11 @@ this.Flight.SearchPage = (function searchPage(global, api, format) {
     });
 
     return table;
+  }
+
+  function renderError(error) {
+    flightsSection.innerHTML = '';
+    flightsSection.appendChild(createError(error));
   }
 
   function render() {

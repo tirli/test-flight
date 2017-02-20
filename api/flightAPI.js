@@ -2,6 +2,8 @@ import isomorphicFetch from 'isomorphic-fetch';
 import flattenDeep from 'lodash/flattenDeep';
 import addDays from 'date-fns/add_days';
 import subDays from 'date-fns/sub_days';
+import isBefore from 'date-fns/is_before';
+import startOfToday from 'date-fns/start_of_today';
 import format from 'date-fns/format';
 import { stringify } from 'query-string';
 
@@ -23,6 +25,7 @@ export function getAirports(city) {
 
 function getFlightsForDay(airlines, from, to, date) {
   const flights = [];
+  if (isBefore(date, startOfToday())) return Promise.resolve([]);
 
   airlines.forEach((al) => {
     from.forEach((fr) => {
@@ -48,7 +51,6 @@ export async function getFlights(cityFrom, cityTo, date) {
     getAirports(cityTo),
   ]);
 
-  // FIXME for past dates
   const dates = [subDays(date, 2), subDays(date, 1), date, addDays(date, 1), addDays(date, 2)];
   const flightsPromises = [];
 

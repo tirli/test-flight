@@ -1,6 +1,4 @@
 this.Flight.API = (function API(global, fetch) {
-  'use strict';
-
   function search(date, from, to) {
     return fetch(`/search?date=${date}&from_city=${from}&to_city=${to}`).then(r => r.json());
   }

@@ -47,6 +47,7 @@ html, body, .content {
 
 .searchForm {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .search-label {
